@@ -1,0 +1,67 @@
+name: Build & Release APK
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    name: Build signed APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Decode keystore
+        run: |
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > android/app/coinflux-release-key.jks
+
+      - name: Create key.properties
+        run: |
+          cat > android/key.properties <<EOF
+          storePassword=${{ secrets.STORE_PASSWORD }}
+          keyPassword=${{ secrets.KEY_PASSWORD }}
+          keyAlias=${{ secrets.KEY_ALIAS }}
+          storeFile=coinflux-release-key.jks
+          EOF
+
+      - name: Build release APK
+        run: flutter build apk --release
+
+      - name: Rename APK with version tag
+        run: |
+          cp build/app/outputs/flutter-apk/app-release.apk \
+             build/app/outputs/flutter-apk/coinflux-${{ github.ref_name }}.apk
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: CoinFlux ${{ github.ref_name }}
+          body: |
+            ## CoinFlux ${{ github.ref_name }}
+
+            ### Install
+            1. Download `coinflux-${{ github.ref_name }}.apk` below
+            2. On your Android device: **Settings → Install unknown apps** → allow your browser/file manager
+            3. Open the downloaded APK and install
+
+            ### Changes
+            See [commits](${{ github.server_url }}/${{ github.repository }}/commits/${{ github.ref_name }}) for full change history.
+          files: build/app/outputs/flutter-apk/coinflux-${{ github.ref_name }}.apk
+          token: ${{ secrets.GITHUB_TOKEN }}
