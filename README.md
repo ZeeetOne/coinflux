@@ -1,27 +1,39 @@
-# CoinFlux: Live Fiat & Crypto Converter
+# CoinFlux
 
-A mobile-first, real-time currency converter that seamlessly bridges traditional fiat money (USD, IDR, EUR) and cryptocurrencies (BTC, ETH, SOL).
-
-Built with Flutter and Riverpod.
+> Live fiat & crypto converter for Android
 
 [![Release](https://img.shields.io/github/v/release/ZeeetOne/coinflux?style=flat-square)](https://github.com/ZeeetOne/coinflux/releases/latest)
 [![Flutter](https://img.shields.io/badge/Flutter-3.41.6-blue?style=flat-square&logo=flutter)](https://flutter.dev)
 [![License](https://img.shields.io/github/license/ZeeetOne/coinflux?style=flat-square)](LICENSE)
 
+CoinFlux lets you track and convert between fiat currencies (USD, IDR, EUR, and more) and cryptocurrencies (BTC, ETH, SOL, and more) in one unified list — with live rates updated from the Coinbase API.
+
+---
+
 ## Download
 
-**Android:** Go to [Releases](https://github.com/ZeeetOne/coinflux/releases/latest) and download the latest `.apk` file.
+**[Download latest APK](https://github.com/ZeeetOne/coinflux/releases/latest)**
 
-> **Install instructions:** Settings → Install unknown apps → allow your browser or file manager → open the downloaded APK.
+Install steps on Android:
+1. Download the `.apk` file from the link above
+2. Open the file — if prompted, go to **Settings → Install unknown apps** and allow your browser or file manager
+3. Tap **Install**
+
+---
 
 ## Features
 
-- **Real-Time Data** — Live exchange rates powered by the Coinbase API
-- **Unified Interface** — Convert between fiat and crypto in a single list
-- **Personalized Watchlist** — Add, remove, and persist your favorite currencies
-- **Smart Formatting** — Handles massive numbers (IDR) and micro-decimals (crypto tokens)
-- **Swipe to Delete** — Remove currencies from your watchlist with a swipe gesture
-- **Pull to Refresh** — Fetch the latest rates on demand
+| Feature | Description |
+|---|---|
+| Live rates | Exchange rates fetched in real-time from Coinbase |
+| Fiat + crypto | Mix USD, IDR, EUR, BTC, ETH, SOL and hundreds more in one list |
+| Custom watchlist | Add and remove currencies, persisted across sessions |
+| Base currency | Set any currency as your base and see all others converted |
+| Smart formatting | Handles large fiat numbers (e.g. IDR) and micro-decimal crypto values |
+| Swipe to delete | Remove a currency from your watchlist with a swipe |
+| Pull to refresh | Tap to reload the latest rates at any time |
+
+---
 
 ## Tech Stack
 
@@ -31,19 +43,19 @@ Built with Flutter and Riverpod.
 | State management | Riverpod 3 |
 | Networking | Dio 5 |
 | Persistence | SharedPreferences |
-| Data source | Coinbase API |
+| Data source | Coinbase Exchange Rates API |
+
+---
 
 ## Build from Source
 
 ### Prerequisites
 - [Flutter SDK](https://flutter.dev/docs/get-started/install) 3.41.6+
-- Android SDK (for Android builds)
+- Android SDK
 
 ### Run in debug mode
 ```bash
 flutter pub get
-dart run flutter_launcher_icons
-dart run flutter_native_splash:create
 flutter run
 ```
 
@@ -52,13 +64,15 @@ flutter run
 flutter build apk --release
 ```
 
-> A signed release APK requires a keystore. See [Flutter's signing guide](https://docs.flutter.dev/deployment/android#signing-the-app) for setup.
+> Signing a release APK requires a keystore and `android/key.properties`. See [Flutter's signing guide](https://docs.flutter.dev/deployment/android#signing-the-app).
+
+---
 
 ## Project Structure
 
 ```
 lib/
-  main.dart                    # Entry point
+  main.dart                    # Entry point + splash init
   app.dart                     # MaterialApp + theme
   models/currency.dart         # Data models, constants, formatting
   services/
@@ -71,13 +85,15 @@ lib/
   widgets/                     # UI components
 ```
 
-## CI/CD
+---
 
-Releases are built automatically via GitHub Actions on every version tag push:
+## Releases
+
+New releases are built and published automatically via GitHub Actions whenever a version tag is pushed:
 
 ```bash
-git tag v1.0.0
-git push origin v1.0.0
+git tag v1.0.1
+git push origin v1.0.1
 ```
 
-The workflow builds a signed APK and publishes it to GitHub Releases.
+The workflow builds a signed APK and publishes it to [GitHub Releases](https://github.com/ZeeetOne/coinflux/releases).
