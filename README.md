@@ -5,7 +5,7 @@ A mobile-first, real-time currency converter that seamlessly bridges traditional
 Built with Flutter and Riverpod.
 
 [![Release](https://img.shields.io/github/v/release/ZeeetOne/coinflux?style=flat-square)](https://github.com/ZeeetOne/coinflux/releases/latest)
-[![Flutter](https://img.shields.io/badge/Flutter-3.11+-blue?style=flat-square&logo=flutter)](https://flutter.dev)
+[![Flutter](https://img.shields.io/badge/Flutter-3.41.6-blue?style=flat-square&logo=flutter)](https://flutter.dev)
 [![License](https://img.shields.io/github/license/ZeeetOne/coinflux?style=flat-square)](LICENSE)
 
 ## Download
@@ -27,7 +27,7 @@ Built with Flutter and Riverpod.
 
 | Layer | Technology |
 |---|---|
-| Framework | Flutter 3.11+ |
+| Framework | Flutter 3.41.6 |
 | State management | Riverpod 3 |
 | Networking | Dio 5 |
 | Persistence | SharedPreferences |
@@ -36,7 +36,7 @@ Built with Flutter and Riverpod.
 ## Build from Source
 
 ### Prerequisites
-- [Flutter SDK](https://flutter.dev/docs/get-started/install) 3.11+
+- [Flutter SDK](https://flutter.dev/docs/get-started/install) 3.41.6+
 - Android SDK (for Android builds)
 
 ### Run in debug mode
