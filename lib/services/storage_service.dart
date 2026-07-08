@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class StorageService {
   static const _baseCurrencyKey = 'baseCurrency';
   static const _watchlistKey = 'myCurrencies';
+  static const _themeModeKey = 'themeMode';
 
   Future<String?> getBaseCurrency() async {
     final prefs = await SharedPreferences.getInstance();
@@ -22,5 +23,15 @@ class StorageService {
   Future<void> setWatchlist(List<String> codes) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setStringList(_watchlistKey, codes);
+  }
+
+  Future<String?> getThemeMode() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_themeModeKey);
+  }
+
+  Future<void> setThemeMode(String mode) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_themeModeKey, mode);
   }
 }

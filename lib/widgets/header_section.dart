@@ -2,6 +2,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/preferences_provider.dart';
+import '../screens/settings_screen.dart';
+import '../theme/app_theme.dart';
 import 'status_indicator.dart';
 import 'currency_modal.dart';
 
@@ -41,6 +43,13 @@ class _HeaderSectionState extends ConsumerState<HeaderSection> {
     );
   }
 
+  void _openSettings() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => const SettingsScreen()),
+    );
+  }
+
   void _openTargetModal() {
     showModalBottomSheet(
       context: context,
@@ -56,14 +65,10 @@ class _HeaderSectionState extends ConsumerState<HeaderSection> {
     final prefs = ref.watch(preferencesProvider).asData?.value;
     final baseCurrency = prefs?.baseCurrency ?? 'USD';
 
+    final cfColors = Theme.of(context).extension<CoinFluxColors>()!;
+
     return Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [Color(0xFF4338CA), Color(0xFF6B21A8)],
-        ),
-      ),
+      decoration: BoxDecoration(gradient: cfColors.headerGradient),
       child: SafeArea(
         bottom: false,
         child: Padding(
@@ -71,15 +76,33 @@ class _HeaderSectionState extends ConsumerState<HeaderSection> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const Text(
-                'Fiat & Crypto Rates',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                  letterSpacing: 1.2,
-                ),
+              Stack(
+                alignment: Alignment.center,
+                children: [
+                  const Text(
+                    'Fiat & Crypto Rates',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      letterSpacing: 1.2,
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: IconButton(
+                      onPressed: _openSettings,
+                      visualDensity: VisualDensity.compact,
+                      tooltip: 'Settings',
+                      icon: const Icon(
+                        Icons.settings_outlined,
+                        color: Colors.white,
+                        size: 22,
+                      ),
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(height: 24),
               Container(
@@ -99,7 +122,7 @@ class _HeaderSectionState extends ConsumerState<HeaderSection> {
                       style: TextStyle(
                         fontSize: 10,
                         fontWeight: FontWeight.w600,
-                        color: Colors.indigo[200],
+                        color: Colors.white.withValues(alpha: 0.75),
                         letterSpacing: 2,
                       ),
                     ),
@@ -113,8 +136,7 @@ class _HeaderSectionState extends ConsumerState<HeaderSection> {
                             decoration: BoxDecoration(
                               border: Border(
                                 right: BorderSide(
-                                  color: Colors.indigo[300]!
-                                      .withValues(alpha: 0.3),
+                                  color: Colors.white.withValues(alpha: 0.3),
                                 ),
                               ),
                             ),
@@ -156,8 +178,7 @@ class _HeaderSectionState extends ConsumerState<HeaderSection> {
                               border: InputBorder.none,
                               hintText: '0',
                               hintStyle: TextStyle(
-                                color: Colors.indigo[300]
-                                    ?.withValues(alpha: 0.5),
+                                color: Colors.white.withValues(alpha: 0.4),
                               ),
                             ),
                           ),

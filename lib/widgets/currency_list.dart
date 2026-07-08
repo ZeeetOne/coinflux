@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/currency.dart';
 import '../providers/preferences_provider.dart';
 import '../providers/rates_provider.dart';
+import '../theme/app_theme.dart';
 import 'currency_card.dart';
 import 'empty_state.dart';
 
@@ -27,7 +28,9 @@ class CurrencyList extends ConsumerWidget {
           child: Text(
             'Failed to load rates.\nPull down to retry.',
             textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.grey[500]),
+            style: TextStyle(
+              color: Theme.of(context).extension<CoinFluxColors>()!.textMuted,
+            ),
           ),
         );
       },

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/currency.dart';
+import '../theme/app_theme.dart';
 
 class CurrencyCard extends StatelessWidget {
   final ConvertedCurrency currency;
@@ -15,6 +16,8 @@ class CurrencyCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final cfColors = theme.extension<CoinFluxColors>()!;
     final avatarLabel = currency.code.length > 4
         ? '${currency.code.substring(0, 3)}..'
         : currency.code;
@@ -27,17 +30,17 @@ class CurrencyCard extends StatelessWidget {
         alignment: Alignment.centerRight,
         padding: const EdgeInsets.only(right: 20),
         decoration: BoxDecoration(
-          color: Colors.red[100],
+          color: cfColors.deleteBackground,
           borderRadius: BorderRadius.circular(16),
         ),
-        child: Icon(Icons.delete_outline, color: Colors.red[600]),
+        child: Icon(Icons.delete_outline, color: cfColors.deleteForeground),
       ),
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: theme.cardColor,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: Colors.grey[100]!),
+          border: Border.all(color: cfColors.cardBorder),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withValues(alpha: 0.03),
@@ -53,13 +56,9 @@ class CurrencyCard extends StatelessWidget {
               height: 48,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: currency.isCrypto
-                      ? [const Color(0xFFF5F3FF), const Color(0xFFE0E7FF)]
-                      : [const Color(0xFFEFF6FF), const Color(0xFFECFEFF)],
-                ),
+                gradient: currency.isCrypto
+                    ? cfColors.avatarCryptoGradient
+                    : cfColors.avatarFiatGradient,
               ),
               child: Center(
                 child: Text(
@@ -68,8 +67,8 @@ class CurrencyCard extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     fontSize: 12,
                     color: currency.isCrypto
-                        ? const Color(0xFF4338CA)
-                        : const Color(0xFF1D4ED8),
+                        ? cfColors.avatarCryptoForeground
+                        : cfColors.avatarFiatForeground,
                   ),
                 ),
               ),
@@ -81,10 +80,10 @@ class CurrencyCard extends StatelessWidget {
                 children: [
                   Text(
                     currency.code,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
-                      color: Color(0xFF1F2937),
+                      color: theme.colorScheme.onSurface,
                     ),
                   ),
                   const SizedBox(height: 2),
@@ -92,7 +91,7 @@ class CurrencyCard extends StatelessWidget {
                     '1 $baseCurrency = ${formatNumber(currency.rate)}',
                     style: TextStyle(
                       fontSize: 12,
-                      color: Colors.grey[400],
+                      color: cfColors.textMuted,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -101,10 +100,10 @@ class CurrencyCard extends StatelessWidget {
             ),
             Text(
               formatNumber(currency.converted),
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w800,
-                color: Color(0xFF1F2937),
+                color: theme.colorScheme.onSurface,
               ),
             ),
           ],

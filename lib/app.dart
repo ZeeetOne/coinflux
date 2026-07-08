@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'providers/theme_provider.dart';
 import 'screens/home_screen.dart';
+import 'theme/app_theme.dart';
 
-class CoinFluxApp extends StatelessWidget {
+class CoinFluxApp extends ConsumerWidget {
   const CoinFluxApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final themeMode = ref.watch(themeModeProvider);
+
     return MaterialApp(
       title: 'CoinFlux',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF4338CA), // indigo-700
-          brightness: Brightness.light,
-        ),
-        scaffoldBackgroundColor: const Color(0xFFF9FAFB), // gray-50
-        useMaterial3: true,
-      ),
+      theme: AppTheme.light,
+      darkTheme: AppTheme.dark,
+      themeMode: themeMode,
       home: const HomeScreen(),
     );
   }
