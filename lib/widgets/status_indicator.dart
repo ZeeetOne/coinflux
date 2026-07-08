@@ -46,7 +46,10 @@ class StatusIndicator extends ConsumerWidget {
           const SizedBox(width: 8),
           Text(
             'Updated live via Coinbase',
-            style: TextStyle(fontSize: 12, color: Colors.indigo[200]),
+            style: TextStyle(
+              fontSize: 12,
+              color: Colors.white.withValues(alpha: 0.8),
+            ),
           ),
         ],
       ),

@@ -24,21 +24,21 @@ dev_dependencies:
 flutter_launcher_icons:
   android: true
   ios: true
-  image_path: "assets/logo.jpg"
+  image_path: "assets/logo.png"
   min_sdk_android: 21
-  adaptive_icon_background: "#4338CA"
-  adaptive_icon_foreground: "assets/logo.jpg"
+  adaptive_icon_background: "#151515"
+  adaptive_icon_foreground: "assets/logo.png"
 
 flutter_native_splash:
-  color: "#4338CA"
-  image: assets/logo.jpg
-  color_dark: "#4338CA"
-  image_dark: assets/logo.jpg
+  color: "#151515"
+  image: assets/logo.png
+  color_dark: "#151515"
+  image_dark: assets/logo.png
   android_12:
-    image: assets/logo.jpg
-    icon_background_color: "#4338CA"
-    image_dark: assets/logo.jpg
-    icon_background_color_dark: "#4338CA"
+    image: assets/logo.png
+    icon_background_color: "#151515"
+    image_dark: assets/logo.png
+    icon_background_color_dark: "#151515"
   ios: true
   android: true
   web: false
