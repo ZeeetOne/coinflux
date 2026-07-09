@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/currency.dart';
+import '../providers/currency_names_provider.dart';
 import '../providers/preferences_provider.dart';
 import '../providers/rates_provider.dart';
 import '../theme/app_theme.dart';
@@ -15,6 +16,7 @@ class CurrencyList extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final prefs = ref.watch(preferencesProvider).asData?.value;
     final ratesAsync = ref.watch(ratesProvider);
+    final names = ref.watch(currencyNamesProvider).asData?.value ?? {};
 
     if (prefs == null) {
       return const Center(child: CircularProgressIndicator());
@@ -54,6 +56,7 @@ class CurrencyList extends ConsumerWidget {
             rate: rate,
             converted: prefs.amount * rate,
             isCrypto: isCryptoCurrency(code, rate),
+            name: names[code],
           );
         }).toList();
 

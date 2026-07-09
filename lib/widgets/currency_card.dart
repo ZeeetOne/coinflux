@@ -79,12 +79,13 @@ class CurrencyCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    currency.code,
+                    currencyLabel(currency.code, currency.name),
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
                       color: theme.colorScheme.onSurface,
                     ),
+                    overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: 2),
                   Text(

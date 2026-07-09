@@ -12,18 +12,24 @@ class ConvertedCurrency {
   final double rate;
   final double converted;
   final bool isCrypto;
+  final String? name;
 
   const ConvertedCurrency({
     required this.code,
     required this.rate,
     required this.converted,
     required this.isCrypto,
+    this.name,
   });
 }
 
 bool isCryptoCurrency(String code, double rate) {
   return kKnownCrypto.contains(code) ||
       (rate < 0.01 && !{'IDR', 'VND'}.contains(code));
+}
+
+String currencyLabel(String code, String? name) {
+  return name == null ? code : '$code - $name';
 }
 
 String formatNumber(double num) {

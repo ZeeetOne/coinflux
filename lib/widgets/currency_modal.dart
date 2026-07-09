@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/currency.dart';
+import '../providers/currency_names_provider.dart';
 import '../providers/preferences_provider.dart';
 import '../providers/rates_provider.dart';
 import '../theme/app_theme.dart';
@@ -26,11 +27,16 @@ class _CurrencyModalState extends ConsumerState<CurrencyModal> {
     super.dispose();
   }
 
-  List<String> _buildSortedList(List<String> allCurrencies) {
+  List<String> _buildSortedList(
+    List<String> allCurrencies,
+    Map<String, String> names,
+  ) {
     if (_searchTerm.isNotEmpty) {
-      return allCurrencies
-          .where((c) => c.contains(_searchTerm.toUpperCase()))
-          .toList();
+      final term = _searchTerm.toLowerCase();
+      return allCurrencies.where((c) {
+        final name = names[c]?.toLowerCase() ?? '';
+        return c.toLowerCase().contains(term) || name.contains(term);
+      }).toList();
     }
     final priority =
         kPriorityList.where((c) => allCurrencies.contains(c)).toList();
@@ -44,11 +50,12 @@ class _CurrencyModalState extends ConsumerState<CurrencyModal> {
     final prefs = ref.watch(preferencesProvider).asData?.value;
     final ratesAsync = ref.watch(ratesProvider);
     final allCurrencies = ratesAsync.asData?.value.allCurrencies ?? [];
+    final names = ref.watch(currencyNamesProvider).asData?.value ?? {};
 
     final isBase = widget.mode == ModalMode.base;
     final title = isBase ? 'Select Base Currency' : 'Add Fiat or Crypto';
 
-    final sortedList = _buildSortedList(allCurrencies);
+    final sortedList = _buildSortedList(allCurrencies, names);
     final theme = Theme.of(context);
     final cfColors = theme.extension<CoinFluxColors>()!;
 
@@ -118,6 +125,7 @@ class _CurrencyModalState extends ConsumerState<CurrencyModal> {
                 if (isBase) {
                   return _BaseItem(
                     code: currency,
+                    name: names[currency],
                     isSelected: currency == prefs?.baseCurrency,
                     onTap: () {
                       ref
@@ -132,6 +140,7 @@ class _CurrencyModalState extends ConsumerState<CurrencyModal> {
                   }
                   return _TargetItem(
                     code: currency,
+                    name: names[currency],
                     isSelected: prefs?.watchlist.contains(currency) ?? false,
                     onTap: () => ref
                         .read(preferencesProvider.notifier)
@@ -149,11 +158,13 @@ class _CurrencyModalState extends ConsumerState<CurrencyModal> {
 
 class _BaseItem extends StatelessWidget {
   final String code;
+  final String? name;
   final bool isSelected;
   final VoidCallback onTap;
 
   const _BaseItem({
     required this.code,
+    this.name,
     required this.isSelected,
     required this.onTap,
   });
@@ -182,7 +193,8 @@ class _BaseItem extends StatelessWidget {
         ),
       ),
       title: Text(
-        code,
+        currencyLabel(code, name),
+        overflow: TextOverflow.ellipsis,
         style: TextStyle(
           fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
           color: isSelected ? colorScheme.primary : colorScheme.onSurface,
@@ -197,11 +209,13 @@ class _BaseItem extends StatelessWidget {
 
 class _TargetItem extends StatelessWidget {
   final String code;
+  final String? name;
   final bool isSelected;
   final VoidCallback onTap;
 
   const _TargetItem({
     required this.code,
+    this.name,
     required this.isSelected,
     required this.onTap,
   });
@@ -230,7 +244,8 @@ class _TargetItem extends StatelessWidget {
         ),
       ),
       title: Text(
-        code,
+        currencyLabel(code, name),
+        overflow: TextOverflow.ellipsis,
         style: TextStyle(
           fontWeight: FontWeight.w500,
           color: colorScheme.onSurface,

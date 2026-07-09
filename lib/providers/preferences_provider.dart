@@ -43,6 +43,9 @@ class PreferencesNotifier extends AsyncNotifier<AppPreferences> {
 
     var watchlist = List<String>.from(current.watchlist);
     watchlist.remove(code);
+    if (!watchlist.contains(current.baseCurrency)) {
+      watchlist.add(current.baseCurrency);
+    }
 
     final newState = current.copyWith(baseCurrency: code, watchlist: watchlist);
     state = AsyncData(newState);

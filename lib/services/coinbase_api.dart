@@ -34,4 +34,23 @@ class CoinbaseApi {
       throw Exception('Unexpected response format from server.');
     }
   }
+
+  Future<Map<String, String>> fetchCurrencyNames() async {
+    final responses = await Future.wait([
+      _dio.get('https://api.coinbase.com/v2/currencies'),
+      _dio.get('https://api.coinbase.com/v2/currencies/crypto'),
+    ]);
+
+    final fiat = (responses[0].data['data'] as List).cast<Map<String, dynamic>>();
+    final crypto = (responses[1].data['data'] as List).cast<Map<String, dynamic>>();
+
+    final names = <String, String>{};
+    for (final c in fiat) {
+      names[c['id'] as String] = c['name'] as String;
+    }
+    for (final c in crypto) {
+      names[c['code'] as String] = c['name'] as String;
+    }
+    return names;
+  }
 }
